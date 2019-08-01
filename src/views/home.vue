@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <div id="home">
 		<div class="nav">
 			<router-link to="/">登入</router-link> |
-			<router-link to="/home">注册</router-link>
+			<router-link to="/home">后台登入</router-link>
 		</div>
 		<div class="router">
 			<router-link to='/teacherManage'>教师管理</router-link>
@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 	a{
 		margin: 0 5px; font-weight: bold; text-decoration: none;
 	}
