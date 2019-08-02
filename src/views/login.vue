@@ -1,5 +1,5 @@
 <template>
-	<div id="logan">
+	<div id="login">
 		<div class="form">
 			<el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
 				<el-form-item label="手机号" prop="phone">
@@ -28,9 +28,9 @@
 				ruleForm: {
 					phone: "", //手机号
 					pass: '', //密码
-					logining:false//登陆状态
+					logining: false //登陆状态
 				},
-				checked:false,//记住密码状态
+				checked: false, //记住密码状态
 				rules: {
 					phone: [{
 						required: true,
@@ -45,11 +45,11 @@
 				}
 			};
 		},
-		created(){
-			if(Cookie.getCookie("phone") && Cookie.getCookie("phone")){//当cookie中有值时
-				this.checked=true;//状态为true
-				this.ruleForm.phone = Base64.decode(Cookie.getCookie("phone"));//解码
-				this.ruleForm.pass = Base64.decode(Cookie.getCookie("pass"));//解码
+		created() {
+			if (Cookie.getCookie("phone") && Cookie.getCookie("phone")) { //当cookie中有值时
+				this.checked = true; //状态为true
+				this.ruleForm.phone = Base64.decode(Cookie.getCookie("phone")); //解码
+				this.ruleForm.pass = Base64.decode(Cookie.getCookie("pass")); //解码
 			}
 		},
 		methods: {
@@ -59,6 +59,15 @@
 			submitForm(formName) {
 				var that = this;
 				that.logining = true;
+				const loading = this.$loading({
+					lock: true,
+					text: 'Loading',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.7)'
+				});
+				setTimeout(() => {
+					loading.close();
+				}, 1000);
 				that.axios.get('/api/OAuth/authenticate', {
 					params: {
 						userMobile: that.ruleForm.phone,
@@ -66,29 +75,39 @@
 					}
 				}).then((res) => {
 					that.logining = false;
-					that.$router.push("/home");
+					//console.log(res.status)
+					if (that.checked == true) {
+						console.log("checked == true");
+						let phone = Base64.encode(that.ruleForm.phone); //加密
+						let pass = Base64.encode(that.ruleForm.pass); //加密
+						//传入账号名，密码，和保存天数 3个参数
+						Cookie.setCookie("phone", phone, {
+							maxAge: 60 * 60 * 24 * 7
+						});
+						Cookie.setCookie("pass", pass, {
+							maxAge: 60 * 60 * 24 * 7
+						});
+					} else {
+						console.log("清空Cookie");
+						//清空Cookie内容
+						Cookie.removeCookie("phone");
+						Cookie.removeCookie("pass");
+					}
+					that.$router.replace("/Home");
 					that.$message({
 						message: '登入成功',
 						type: 'success',
 					});
-					//console.log(res.status)
-					if (that.checked == true) {
-						console.log("checked == true");
-						let phone = Base64.encode(that.ruleForm.phone);//加密
-						let pass = Base64.encode(that.ruleForm.pass);//加密
-						//传入账号名，密码，和保存天数 3个参数
-						Cookie.setCookie("phone", phone,{maxAge:60*60*24*7});
-						Cookie.setCookie("pass", pass, {maxAge:60*60*24*7});
-					}else{
-						console.log("清空Cookie");
-						//清空Cookie
-						Cookie.removeCookie(pass);
-						Cookie.removeCookie(phone);
-					}
 				}).catch((err) => {
 					that.logining = false;
-					console.log(err)
-					that.$message.error('登入失败');
+					console.log(err.response.status)
+					if (err.response.status == 403) {
+						that.$message.error('您登入太频繁');
+					} else if (err.response.status == 401) {
+						that.$message.error('您输入手机号与密码不匹配');
+					} else {
+						that.$message.error('登入失败');
+					}
 				})
 			},
 			/**
@@ -102,13 +121,14 @@
 </script>
 
 <style scoped lang="less">
-	#logan {
+	#login {
 		width: 100%;
-		height: 100vh;//宽度100%
+		height: 100vh; //宽度100%
 		background-image: url(../assets/timg.jpg);
 		background-size: cover;
 		display: flex;
 	}
+
 	.form {
 		margin: auto;
 		background-color: rgba(0, 0, 0, 0.75);

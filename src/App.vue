@@ -1,8 +1,6 @@
 <template>
   <div id="app">
     <div id="nav">
-      <!-- <router-link to="/">登入</router-link> |
-      <router-link to="/home">注册</router-link> -->
     </div>
    <router-view/>
   </div>

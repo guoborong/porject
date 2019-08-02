@@ -1,9 +1,10 @@
 import Vue from 'vue'//接受testmodule里的四个vue
 import Router from 'vue-router'
 import arrangetest from '../views/testmodule/arrangetest.vue'
-import Markexampapers from '../views/testmodule/Markexampapers.vue'
-import Testinput from '../views/testmodule/Testinput.vue'
-import Viewresults from '../views/testmodule/Viewresults.vue'
+import markexampapers from '../views/testmodule/markexampapers.vue'
+import testinput from '../views/testmodule/testinput.vue'
+import papers from '../views/testmodule/papers.vue'
+import viewresults from '../views/testmodule/viewresults.vue'
 Vue.use(Router)
 
 export default[
@@ -12,15 +13,19 @@ export default[
 		component: arrangetest
 	},
 	{
-		path: '/Markexampapers',
-		component: Markexampapers
+		path: '/markexampapers',
+		component: markexampapers
 	},
 	{
-		path: '/Testinput',
-		component: Testinput
+		path: '/papers',
+		component: papers
 	},
 	{
-		path: '/Viewresults',
-		component: Viewresults
+		path: '/testinput',
+		component: testinput
+	},
+	{
+		path: '/viewresults',
+		component: viewresults
 	}
 ]
