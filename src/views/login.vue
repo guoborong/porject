@@ -46,6 +46,9 @@
 			};
 		},
 		created() {
+			// 清除后台页面用户存留的tab标签页操作
+			sessionStorage.removeItem('TabName');
+			sessionStorage.removeItem('editableTabs');
 			if (Cookie.getCookie("phone") && Cookie.getCookie("phone")) { //当cookie中有值时
 				this.checked = true; //状态为true
 				this.ruleForm.phone = Base64.decode(Cookie.getCookie("phone")); //解码
@@ -74,8 +77,13 @@
 						userPassword: that.ruleForm.pass
 					}
 				}).then((res) => {
-					that.logining = false;
-					//console.log(res.status)
+					that.logining = true;
+					console.log(res)
+					// 定义令牌,根据后台数据得到想要的数据拼接起来
+					let token = res.data.token_type + ' ' + res.data.access_token //加空格不然报错401
+					sessionStorage.setItem('token', token); //本地存储token
+					// 存储返回的用户id,用作指定修改密码
+					sessionStorage.setItem('userUid', res.data.profile.userUid);
 					if (that.checked == true) {
 						console.log("checked == true");
 						let phone = Base64.encode(that.ruleForm.phone); //加密
