@@ -9,19 +9,11 @@
 				<el-table-column label="日期" width="180">
 					<template slot-scope="scope">
 						<i class="el-icon-time"></i>
-						<span style="margin-left: 10px">{{ scope.row.date }}</span>
+						<span style="margin-left: 10px">111<!-- {{ scope.row.date }} --></span>
 					</template>
 				</el-table-column>
 				<el-table-column label="姓名" width="180">
-					<template slot-scope="scope">
-						<el-popover trigger="hover" placement="top">
-							<p>姓名: {{ scope.row.name }}</p>
-							<p>住址: {{ scope.row.address }}</p>
-							<div slot="reference" class="name-wrapper">
-								<el-tag size="medium">{{ scope.row.name }}</el-tag>
-							</div>
-						</el-popover>
-					</template>
+					<el-tag size="medium">222<!-- {{ scope.row.name }} --></el-tag>
 				</el-table-column>
 				<el-table-column label="操作">
 					<template slot-scope="scope">
@@ -38,26 +30,20 @@
 	export default {
 		data() {
 			return {
-				tableData: [{
-					date: '2016-05-02',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
-				}, {
-					date: '2016-05-04',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄'
-				}, {
-					date: '2016-05-01',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1519 弄'
-				}, {
-					date: '2016-05-03',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1516 弄'
-				}]
+				tableData: []
 			}
 		},
+		created() {
+			this.array();
+		},
 		methods: {
+			array() {
+				var that = this;
+				that.axios.get('/api/Class/GetAllClass').then((res) => {
+					console.log(res)
+					//this.tableData = res
+				})
+			},
 			handleEdit(index, row) {
 				console.log(index, row);
 			},

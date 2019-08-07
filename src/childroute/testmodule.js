@@ -1,4 +1,4 @@
-import Vue from 'vue'//接受testmodule里的四个vue
+import Vue from 'vue'//接受testModule里的四个vue
 import Router from 'vue-router'
 import arrangetest from '../views/testmodule/arrangetest.vue'
 import markexampapers from '../views/testmodule/markexampapers.vue'

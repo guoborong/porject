@@ -1,9 +1,9 @@
 import Vue from 'vue'//接受manage里的四个vue
 import Router from 'vue-router'
 import password from '../views/manage/password.vue'
-import studentManage from '../views/manage/studentManage.vue'
-import teacherManage from '../views/manage/teacherManage.vue'
-import classManage from '../views/manage/classManage.vue'
+import studentManage from '../views/manage/studentmanage.vue'
+import teacherManage from '../views/manage/teachermanage.vue'
+import classManage from '../views/manage/classmanage.vue'
 
 Vue.use(Router)
 
