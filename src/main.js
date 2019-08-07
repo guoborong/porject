@@ -45,11 +45,7 @@ Vue.use(VueAxios, axios)
 // });
 
 
-new Vue({
-	router,
-	store,
-	render: h => h(App)
-}).$mount('#app')
+
 
 // axios request 拦截器
 axios.interceptors.request.use(
@@ -105,6 +101,14 @@ function failureToken(){
     router.push('/')
   }, 3000);
 }
+
+
+
+new Vue({
+	router,
+	store,
+	render: h => h(App)
+}).$mount('#app')
 
 
 
