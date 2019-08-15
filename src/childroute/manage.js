@@ -4,6 +4,7 @@ import password from '../views/manage/password.vue'
 import studentManage from '../views/manage/studentmanage.vue'
 import teacherManage from '../views/manage/teachermanage.vue'
 import classManage from '../views/manage/classmanage.vue'
+import role from '../views/manage/role.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,10 @@ export default[
 	{
 		path: '/classManage',
 		component: classManage
+	},
+	{
+		path: '/role',
+		component: role
 	}
 ]
 

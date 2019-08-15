@@ -1,20 +1,30 @@
 <template>
 	<div id='password'>
-		<el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-			<el-form-item label="原密码" prop="oldPass">
-				<el-input type="password" v-model="ruleForm.oldPass" autocomplete="off"></el-input>
-			</el-form-item>
-			<el-form-item label="密码" prop="pass">
-				<el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
-			</el-form-item>
-			<el-form-item label="确认密码" prop="checkPass">
-				<el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-				<el-button @click="resetForm('ruleForm')">重置</el-button>
-			</el-form-item>
-		</el-form>
+		<!-- 面包屑 -->
+		<el-breadcrumb separator-class="el-icon-arrow-right">
+			<el-breadcrumb-item>首页</el-breadcrumb-item>
+			<el-breadcrumb-item>基础数据</el-breadcrumb-item>
+			<el-breadcrumb-item>修改密码</el-breadcrumb-item>
+		</el-breadcrumb>
+		<el-card class="box-card">
+			<span>修改密码</span>
+			<el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
+				class="demo-ruleForm">
+				<el-form-item label="原密码" prop="oldPass">
+					<el-input type="password" v-model="ruleForm.oldPass" autocomplete="off"></el-input>
+				</el-form-item>
+				<el-form-item label="密码" prop="pass">
+					<el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+				</el-form-item>
+				<el-form-item label="确认密码" prop="checkPass">
+					<el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+					<el-button @click="resetForm('ruleForm')">重置</el-button>
+				</el-form-item>
+			</el-form>
+		</el-card>
 	</div>
 </template>
 
@@ -52,9 +62,9 @@
 			};
 			return {
 				ruleForm: {
-					oldPass: '',
-					pass: '',
-					checkPass: ''
+					oldPass: '',//旧密码
+					pass: '',//新密码
+					checkPass: ''//确认密码
 				},
 				rules: {
 					oldPass: [{
@@ -90,7 +100,7 @@
 								that.axios
 									.get("/api/User/ModifyPassword", {
 										params: {
-											uid: sessionStorage.getItem("userUid"),
+											uid: sessionStorage.getItem("userUid"),//session存储的
 											oldPassword: that.ruleForm.oldPass, //旧密码
 											newPassword: that.ruleForm.pass //新密码
 										}
@@ -98,21 +108,27 @@
 									.then(res => {
 										console.log(res);
 										//修改成功后跳转到登录页面
-										if(res.data.code == 1){
+										if (res.data.code == 1) {
 											that.$message({
 												message: "密码已被修改,请重新登入",
 												type: 'success'
 											});
-											setTimeout(function() {
+											setTimeout(function () {
 												that.$router.replace("/"); //成功后跳转到首页
 											}, 2000);
-										}else if(res.data.code == -3){
+										} else if (res.data.code == -3) {
 											that.$message({
 												//修改后提示语句
 												message: "原密码与登入密码不一致",
 												type: 'error'
 											});
-										}else{
+										} else if (res.data.code == 0) {
+											that.$message({
+												//修改后提示语句
+												message: "所改密码与原密码一致",
+												type: 'error'
+											});
+										} else {
 											that.$message({
 												//修改后提示语句
 												message: "其它错误",
@@ -135,13 +151,6 @@
 									message: "已取消修改"
 								});
 							});
-					} else {
-						// 密码为空时提示语句
-						that.$message({
-							message: "请输入正确的密码",
-							type: "warning"
-						});
-						return false;
 					}
 				});
 			},
@@ -156,5 +165,8 @@
 	}
 </script>
 
-<style>
+<style scoped lang="less" type="text/less">
+	.el-card{
+        margin-top: 20px;
+    }
 </style>
